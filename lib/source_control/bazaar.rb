@@ -12,13 +12,13 @@ module SourceControl
       raise "don't know how to handle '#{options.keys.first}'" if options.length > 0
     end
 
-    def checkout(revision = nil, stdout = $stdout)
+    def checkout(revision = nil, stdout = $stdout, new_path = path)
       raise 'Repository location is not specified' unless @repository
 
-      raise "#{path} is not empty, cannot branch a project into it" unless (Dir.entries(path) - ['.', '..']).empty?
-      FileUtils.rm_rf(path)
+      raise "#{new_path} is not empty, cannot branch a project into it" unless (Dir.entries(new_path) - ['.', '..']).empty?
+      FileUtils.rm_rf(new_path)
 
-      args = [@repository, path]
+      args = [@repository, new_path]
       args << ['-r', revision.number] if revision
       bzr('branch', args, :execute_in_project_directory => false)
     end

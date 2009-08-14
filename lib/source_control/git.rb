@@ -15,14 +15,14 @@ module SourceControl
       raise "don't know how to handle '#{options.keys.first}'" if options.length > 0
     end
 
-    def checkout(revision = nil, stdout = $stdout)
+    def checkout(revision = nil, stdout = $stdout, new_path = path)
       raise 'Repository location is not specified' unless @repository
 
-      raise "#{path} is not empty, cannot clone a project into it" unless (Dir.entries(path) - ['.', '..']).empty?
-      FileUtils.rm_rf(path)
+      raise "#{new_path} is not empty, cannot clone a project into it" unless (Dir.entries(new_path) - ['.', '..']).empty?
+      FileUtils.rm_rf(new_path)
 
       # need to read from command output, because otherwise tests break
-      git('clone', [@repository, path], :execute_in_project_directory => false)
+      git('clone', [@repository, new_path], :execute_in_project_directory => false)
 
       if @branch
         git('branch', ['--track', @branch, "origin/#@branch"])
