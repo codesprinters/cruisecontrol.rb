@@ -4,7 +4,7 @@ module SourceControl
     class InfoParser
       def parse(xml)
         info = XmlSimple.xml_in(xml.to_s, 'ForceArray' => false)['entry']
-        Subversion::Info.new(info['revision'].to_i, info['commit']['revision'].to_i, info['commit']['author'])
+        Subversion::Info.new(info['revision'].to_i, info['commit']['revision'].to_i, info['commit']['author'], info['url'])
       end
     end
     

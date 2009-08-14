@@ -131,7 +131,7 @@ module SourceControl
       revision.respond_to?(:number) ? revision.number : revision.to_i
     end
 
-    Info = Struct.new :revision, :last_changed_revision, :last_changed_author
+    Info = Struct.new :revision, :last_changed_revision, :last_changed_author, :url
 
     class ExternalReasons < Struct.new :external, :reasons
       def <<(reason)
