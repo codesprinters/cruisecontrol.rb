@@ -261,6 +261,16 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
     end
   end
 
+  def test_repository_detected_by_svn_info_if_not_provided
+    info = Struct.new(:url).new
+    info.url = 'svn://example.org/repo'
+
+    svn = new_subversion
+    svn.expects(:info).returns(info)
+    svn.detect_repository
+    assert_equal svn.repository, info.url
+  end
+
   def numbers(revisions)
     revisions.map { |r|
       r.number

@@ -97,6 +97,11 @@ module SourceControl
     end
 
     def creates_ordered_build_labels?() true end
+
+    def detect_repository
+      # Use svn info to detect repository location
+      @repository = info.url
+    end
     
     private
 
