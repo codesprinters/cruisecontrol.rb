@@ -30,7 +30,7 @@ module SourceControl
       begin
         checkout(revision, stdout, new_path)
         FileUtils.rm_rf(path)
-        FileUtils.mv(new_path, path)
+        FileUtils.mv(new_path, path) if File.directory?(new_path)
       ensure
         FileUtils.rm_rf(new_path)
       end

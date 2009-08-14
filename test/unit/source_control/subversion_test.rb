@@ -145,7 +145,7 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
   end
 
   def test_checkout_requires_repository_location
-    assert_raises('Repository location is not specified') { Subversion.new.checkout('.') }
+    assert_raises(BuilderError) { Subversion.new.checkout('.') }
   end
 
   def test_new_does_not_allow_random_params
@@ -160,7 +160,7 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
       assert File.directory?("project")
 
       svn = Subversion.new(:repository => 'http://foo.com/svn/project', :path => "project")
-      svn.expects(:svn).with("co", ["http://foo.com/svn/project", "project", "--revision", 5],
+      svn.expects(:svn).with("co", ["http://foo.com/svn/project", "project.new", "--revision", 5],
                              :execute_in_project_directory => false)
 
       svn.clean_checkout(Subversion::Revision.new(5))
@@ -177,7 +177,7 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
       end
 
       io = StringIO.new
-      svn.clean_checkout(Subversion::Revision.new(5), io)
+      svn.checkout(Subversion::Revision.new(5), io)
 
       assert_equal "hello world\n", io.string
     end
