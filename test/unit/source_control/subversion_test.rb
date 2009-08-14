@@ -97,6 +97,14 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
     svn.checkout
   end
 
+  def test_checkout_to_a_different_path
+    svn = new_subversion(:repository => 'http://foo.com/svn/project')
+    svn.expects(:svn).with("co", ["http://foo.com/svn/project", "somewhere"],
+                           :execute_in_project_directory => false)
+
+    svn.checkout(nil, $stdout, "somewhere")
+  end
+
 # TODO: rewrite once "SourceControl::AbstractAdapter#execute_with_error_log" is fixed  
 #  def test_should_write_error_info_to_log_when_svn_server_not_available
 #    in_sandbox do |sandbox|
