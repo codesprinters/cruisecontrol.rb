@@ -31,10 +31,10 @@ module SourceControl
       raise "don't know how to handle '#{options.keys.first}'" if options.length > 0
     end
 
-    def checkout(revision = nil, stdout = $stdout)
-      raise 'Repository location is not specified' unless @repository
+    def checkout(revision = nil, stdout = $stdout, checkout_path = path)
+      raise 'Repository location is not specified' unless repository
 
-      arguments = [@repository, path]
+      arguments = [repository, checkout_path]
       arguments << "--username" << @username if @username
       arguments << "--password" << @password if @password
       arguments << "--revision" << revision_number(revision) if revision
@@ -99,7 +99,7 @@ module SourceControl
     def creates_ordered_build_labels?() true end
 
     def repository
-      # Try to detect repository location if not given
+      # Try to detect repository location if not provided
       @repository || info.url
     end
 
