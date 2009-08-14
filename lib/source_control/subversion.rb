@@ -12,7 +12,7 @@ module SourceControl
 
   class Subversion < AbstractAdapter
 
-    attr_accessor :repository, :username, :password, :check_externals
+    attr_accessor :username, :password, :check_externals
 
     def initialize(options = {})
       options = options.dup
@@ -98,10 +98,12 @@ module SourceControl
 
     def creates_ordered_build_labels?() true end
 
-    def detect_repository
-      # Use svn info to detect repository location
-      @repository = info.url
+    def repository
+      # Try to detect repository location if not given
+      @repository || info.url
     end
+
+    attr_writer :repository
     
     private
 

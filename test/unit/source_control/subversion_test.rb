@@ -267,7 +267,6 @@ class SourceControl::SubversionTest < Test::Unit::TestCase
 
     svn = new_subversion
     svn.expects(:info).returns(info)
-    svn.detect_repository
     assert_equal svn.repository, info.url
   end
 
